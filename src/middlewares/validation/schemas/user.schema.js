@@ -17,3 +17,7 @@ export const createUserSchema = {
   password
 };
 
+export const userLoginSchema = {
+  email,
+  password
+};
