@@ -24,3 +24,14 @@ export const getUser = (email) => {
   const user = User.find({ email: email })
   return user;
 };
+
+/**
+* @export
+* @function login
+* @param {String} email - customer email
+* @returns {Object} object
+*/
+export const login = (email) => {
+  const user = User.findOne({ email: email })
+  return user;
+};

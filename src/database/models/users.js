@@ -29,7 +29,7 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-userSchema.methods.validatePassword = async function validatePassword(newPassword) {
+userSchema.methods.validatePassword = function validatePassword(newPassword) {
   return bcrypt.compareSync(newPassword, this.password);
 };
 
