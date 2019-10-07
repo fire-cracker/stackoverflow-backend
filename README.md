@@ -1,5 +1,7 @@
 # A StackOverflow Backend Challenge
 
+[![Build Status](https://travis-ci.org/fire-cracker/stackoverflow-backend.svg?branch=master)](https://travis-ci.org/fire-cracker/stackoverflow-backend)
+
 ## Table of Contents
 
 * [Project Overview](##Project-Overview)
