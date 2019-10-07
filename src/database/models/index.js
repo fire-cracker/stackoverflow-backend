@@ -9,25 +9,18 @@ dotenv.config();
 const env = process.env.NODE_ENV || 'development';
 
 //Set up default mongoose connection
-export const connect = () => {
-    mongoose.connect(config[env].url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(config[env].url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+});
 
-    //Get the default connection
-    var db = mongoose.connection;
+// Get the default connection
+var db = mongoose.connection;
 
-    db.on('connected', console.error.bind(console, 'Connection Open'))
-    
-    //Bind connection to error event (to get notification of connection errors)
-    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// db.on('connected', console.error.bind(console, 'Connection Open'))
 
-    return db;
-}
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-export const disconnect = () => {
-    mongoose.disconnect();
-}
-
-export default { 
-    connect: connect(),
-    disconnect: disconnect()
-};
+export default db;
