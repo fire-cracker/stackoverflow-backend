@@ -5,51 +5,35 @@ import db from './index';
 
 const Schema = mongoose.Schema
 
-  const userSchema = new Schema({
-      name: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      email: {
-        type: DataTypes.STRING(100),
-        unique: true,
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-          isEmail: true,
-        },
-      },
-      password: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-      }
-  });
+const userSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  }
+});
 
-const User = db.model('User', userSchema)
+userSchema.pre('save', async function(next) {
+  if ( this.password && this.isModified('password') ) {
+    const salt = await bcrypt.genSaltSync();
+    this.password = await bcrypt.hashSync(this.password, salt);
+  }
+  next();
+});
 
-  User.beforeCreate(async customer => {
-    customer.password = await customer.generatePasswordHash();
-  });
+userSchema.methods.validatePassword = async function validatePassword(newPassword) {
+  return bcrypt.compareSync(newPassword, this.password);
+};
 
-  User.prototype.generatePasswordHash = async function generatePasswordHash() {
-    const saltRounds = 8;
-    return bcrypt.hash(this.password, saltRounds);
-  };
-
-  User.prototype.validatePassword = async function validatePassword(password) {
-    return bcrypt.compare(password, this.password);
-  };
-
-  User.prototype.getSafeDataValues = function getSafeDataValues() {
-    const { password, ...data } = this.dataValues;
-    return data;
-  };
+const User = db.model('User', userSchema);
 
 
 export default User;

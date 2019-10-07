@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch src --exec babel-node ./src/index.js",
-    "test": "NODE_ENV=test nyc mocha --require @babel/register ./src/tests/*.js --exit",
+    "test": "NODE_ENV=test nyc mocha --require @babel/register ./src/tests/*.spec.js --timeout 10000 --exit",
     "build": "NODE_ENV=production babel src -d dist --copy-files",
     "start": "NODE_ENV=production node dist/index.js",
     "test:watch": "jest --no-cache  --detectOpenHandles --runInBand --watch"
@@ -20,14 +20,11 @@
     "@babel/polyfill": "^7.4.3",
     "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
-    "compression": "^1.7.4",
+    "chalk": "^2.4.2",
     "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "express": "^4.17.1",
-    "express-validator": "^5.3.1",
-    "express-winston": "^3.1.0",
-    "fancy-log": "^1.3.3",
-    "helmet": "^3.16.0",
+    "@hapi/joi": "^15.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.3",
     "morgan": "^1.9.1",
@@ -59,7 +56,7 @@
     "type": "git",
     "url": "git+https://github.com/fire-cracker/stackoverflow-backend.git"
   },
-  "author": "",
+  "author": "Oyedeji Peace",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/fire-cracker/stackoverflow-backend/issues"

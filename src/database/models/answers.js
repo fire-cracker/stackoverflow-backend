@@ -11,12 +11,12 @@ body: {
 
 },
 questionId: {
-    required: true,
+    // required: true,
     type: Schema.Types.ObjectId,
     ref: 'Question'
 },
 userId: {
-    required: true,
+    // required: true,
     type: Schema.Types.ObjectId,
     ref: 'User'
 },
@@ -31,7 +31,7 @@ updatedAt: {
 }
 })
 
-const Answer = db.connect.model('Answer', answerSchema); 
+const Answer = db.model('Answer', answerSchema); 
 
 
 export default Answer;
