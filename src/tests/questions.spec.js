@@ -7,7 +7,7 @@ import Question from '../database/models/questions'
 import {
     createUser, createUser2, invalidUserToken
 } from './mocks/users.mock';
-import { 
+import {
     createQuestion, incorrectQuestionDetails, fakeQuestionId, invalidQuestionId
 } from './mocks/questions.mock';
 
@@ -97,13 +97,40 @@ describe('Tests for questions', () => {
         });
     });
 
+    describe('Tests for get a question', () => {
+        it('should get a question if request is correct', async () => {
+            const res = await chai.request(app)
+                .get(`/questions/${questionId}`)
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an.instanceof(Object)
+                .that.includes.all.keys('status', 'data')
+                .and.to.have.property('data')
+                .that.includes.all.keys('question', 'votes_count')
+                .and.to.have.property('question')
+                .that.includes.all.keys('_id', 'title', 'body', 'userId', 'user')
+                .and.to.have.property('user')
+                .that.includes.all.keys('_id', 'name', 'email')
+        });
+
+        it('should error if question does not exist', async () => {
+            const res = await chai.request(app)
+                .get(`/questions/${fakeQuestionId}`)
+                expect(res).to.have.status(404);
+                expect(res.body).to.be.an.instanceof(Object)
+                    .that.includes.all.keys('status', 'data')
+                    .and.to.have.property('data')
+                    .and.to.have.deep.property('message')
+                    .and.to.equal('Question does not exist');
+        });
+    });
+
     describe('Tests to upvote and downvote a question', () => {
         it('should upvote a question if request is correct', async () => {
             const res = await chai.request(app)
                 .post(`/questions/${questionId}/upvote`)
                 .set('Authorization', `${userToken2}`)
             expect(res).to.have.status(200);
-            expect(res.body).to.be.an.instanceof(Object) 
+            expect(res.body).to.be.an.instanceof(Object)
                 .and.to.have.property('data')
                 .that.includes.all.keys('message', 'votes_count')
                 .and.to.have.property('message')
@@ -128,7 +155,7 @@ describe('Tests for questions', () => {
                 .post(`/questions/${questionId}/downvote`)
                 .set('Authorization', `${userToken2}`)
             expect(res).to.have.status(200);
-            expect(res.body).to.be.an.instanceof(Object) 
+            expect(res.body).to.be.an.instanceof(Object)
                 .and.to.have.property('data')
                 .that.includes.all.keys('message', 'votes_count')
                 .and.to.have.property('message')
@@ -141,7 +168,7 @@ describe('Tests for questions', () => {
                 .post(`/questions/${questionId2}/downvote`)
                 .set('Authorization', `${userToken2}`)
             expect(res).to.have.status(200);
-            expect(res.body).to.be.an.instanceof(Object) 
+            expect(res.body).to.be.an.instanceof(Object)
                 .and.to.have.property('data')
                 .that.includes.all.keys('message', 'votes_count')
                 .and.to.have.property('message')
@@ -166,7 +193,7 @@ describe('Tests for questions', () => {
                 .post(`/questions/${questionId2}/upvote`)
                 .set('Authorization', `${userToken2}`)
             expect(res).to.have.status(200);
-            expect(res.body).to.be.an.instanceof(Object) 
+            expect(res.body).to.be.an.instanceof(Object)
                 .and.to.have.property('data')
                 .that.includes.all.keys('message', 'votes_count')
                 .and.to.have.property('message')
@@ -210,7 +237,7 @@ describe('Tests for questions', () => {
                 .and.to.have.deep.property('message')
                 .and.to.equal('You cannot vote your question');
         });
-        
+
         it('should return error if user tries to downvote their question', async () => {
             const res = await chai.request(app)
                 .post(`/questions/${questionId}/downvote`)

@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import passport from 'passport';
 
-import { createQuestion, getAllQuestions, upVoteQuestion, downVoteQuestion } from '../../controllers/questions.controller'
+import {
+    createQuestion, getAllQuestions, getQuestion, upVoteQuestion, downVoteQuestion
+} from '../../controllers/questions.controller'
 import { authInterceptor } from '../../middlewares/validation/validationHandler';
 import { createQuestionValidator } from '../../middlewares/validation/question.validation';
 import { paramsValidator } from '../../middlewares/validation/params.validation';
@@ -16,6 +18,10 @@ questionsRouter.post('/',
 
 questionsRouter.get('/',
     getAllQuestions);
+
+questionsRouter.get('/:questionId',
+    paramsValidator,
+    getQuestion);
 
 questionsRouter.post('/:questionId/upvote',
     passport.authenticate('jwt', { session: false }),

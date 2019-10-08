@@ -61,6 +61,41 @@ export const getAllQuestions = async ({ query: { limit = 10, page = 0 } }, res) 
 
 /**
 * @export
+* @function getQuestion
+* @param {Object} req - request received
+* @param {Object} res - response object
+* @returns {Object} JSON object (JSend format)
+*/
+export const getQuestion = async ({ params: { questionId } }, res) => {
+  try {
+    const question = await fetchQuestion(questionId);
+
+    if (!question) {
+      return res.status(404).send({
+        status: 'fail',
+        data: {
+          message: 'Question does not exist',
+        }
+      });
+    }
+
+    const numOfVotes = await votesCount(question._id)
+    return res.status(200).send({
+      status: 'success',
+      data: {
+        question,
+        votes_count: numOfVotes
+      }
+    });
+  } catch (error) {
+    return res.status(502).send({
+      message: 'An error occurred'
+    });
+  }
+};
+
+/**
+* @export
 * @function upVoteQuestion
 * @param {Object} req - request received
 * @param {Object} res - response object
@@ -79,7 +114,7 @@ export const upVoteQuestion = async (req, res) => {
 
     const question = await fetchQuestion(questionId)
 
-    if(!question) {
+    if (!question) {
       return res.status(404).send({
         status: 'fail',
         data: {
@@ -88,7 +123,7 @@ export const upVoteQuestion = async (req, res) => {
       });
     }
 
-    if(String(question.userId) === String(userId)) {
+    if (String(question.userId) === String(userId)) {
       return res.status(401).send({
         status: 'fail',
         data: {
@@ -152,7 +187,7 @@ export const downVoteQuestion = async (req, res) => {
 
     const question = await fetchQuestion(questionId)
 
-    if(!question) {
+    if (!question) {
       return res.status(404).send({
         status: 'fail',
         data: {
@@ -161,7 +196,7 @@ export const downVoteQuestion = async (req, res) => {
       });
     }
 
-    if(String(question.userId) === String(userId)) {
+    if (String(question.userId) === String(userId)) {
       return res.status(401).send({
         status: 'fail',
         data: {
@@ -189,7 +224,7 @@ export const downVoteQuestion = async (req, res) => {
     }
 
     const numOfVotes = await votesCount(questionId)
-  
+
     return res.status(200).send({
       status: 'success',
       data: {

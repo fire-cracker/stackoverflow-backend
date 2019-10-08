@@ -31,6 +31,15 @@ updatedAt: {
 }
 })
 
+questionSchema.virtual('user', {
+    ref: 'User',
+    localField: 'userId', 
+    foreignField: '_id',
+    justOne : true
+});
+
+questionSchema.set('toObject', { virtuals: true });
+questionSchema.set('toJSON', { virtuals: true });
 const Question = db.model('Question', questionSchema); 
 
 export default Question;

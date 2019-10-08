@@ -24,7 +24,7 @@ export const addQuestion = (title, body, userId) => {
 * @returns {Object} object
 */
 export const fetchAllQuestions = (limit, page) => {
-  const questions = Question.find({}).populate('userId').skip((limit * page))
+  const questions = Question.find({}, { __v: 0 }).populate('user', '-password -__v').skip((limit * page))
   .limit(limit).sort( '-updatedAt' );
   return questions;
 }
@@ -47,7 +47,7 @@ export const questionCount = () => {
 * @returns {Object} object
 */
 export const fetchQuestion = (questionId) => {
-  const question = Question.findById(questionId);
+  const question = Question.findById(questionId, { __v: 0 }).populate('user', '-password -__v');
   return question;
 }
 
@@ -95,7 +95,7 @@ export const downVote = (questionId, userId) => {
 * @returns {Object} object
 */
 export const votesCount = async (questionId) => {
-  const upVoteCount = await Vote.count({ questionId:  questionId, upVote: true });
-  const downVoteCount = await Vote.count({ questionId:  questionId, downVote: true });
+  const upVoteCount = await Vote.countDocuments({ questionId:  questionId, upVote: true });
+  const downVoteCount = await Vote.countDocuments({ questionId:  questionId, downVote: true });
   return (upVoteCount - downVoteCount);
 }
