@@ -35,3 +35,5 @@ export const createUser = {
     password: 'oyedejipeace',
     email: 'oyedejipeace7@'
   };
+
+  export const invalidUserToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImVtYWlsIjoib2x1d2FzZWd1QGdtYWlsLmNvbSIsImlhdCI6MTU3MDQ4ODg1OCwiZXhwIjoxNTcwNTc1MjU4fQ.icbT73cdkvCvzuPSUl_Z2RnSU1reBxATnEGAoFjHQbI'

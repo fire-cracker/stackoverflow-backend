@@ -6,6 +6,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import db from './database/models';
+import auth from './middlewares/authentication/authenticate';
 import router from './routes';
 
 const logger = createLogger({
@@ -32,6 +33,7 @@ app.use(express.json());
 
 db.on('connected', console.error.bind(console, 'Connection Open'))
 
+app.use(auth.initialize());
 app.use(router);
 
 app.get('*', (req, res) => res.status(200).send({

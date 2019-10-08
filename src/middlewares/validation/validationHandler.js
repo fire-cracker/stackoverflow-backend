@@ -23,3 +23,19 @@ export const validationHandler = async (req, schema, res, next) => {
     });
   }
 };
+
+/**
+* @export
+* @function authInterceptor
+* @param {Object} req - request received
+* @param {Object} res - response object
+* @param {Object} next - next object
+* @returns {Object} next object
+*/
+export const authInterceptor = async (req, res, next) => {
+  const { user } = req;
+  if (user.error) {
+    return res.status(401).send(user.error);
+  }
+  next();
+};
