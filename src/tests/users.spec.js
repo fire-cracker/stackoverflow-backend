@@ -72,7 +72,7 @@ describe('Tests for users', () => {
             const res = await chai.request(app)
                 .post('/users/login')
                 .send(incorrectloginPassword);
-            expect(res).to.have.status(401);
+            expect(res).to.have.status(404);
             expect(res.body).to.be.an.instanceof(Object)
                 .that.includes.all.keys('status', 'data')
                 .and.to.have.property('data')
@@ -84,7 +84,7 @@ describe('Tests for users', () => {
             const res = await chai.request(app)
                 .post('/users/login')
                 .send(loginUserWrongEmail);
-            expect(res).to.have.status(401);
+            expect(res).to.have.status(404);
             expect(res.body).to.be.an.instanceof(Object)
                 .that.includes.all.keys('status', 'data')
                 .and.to.have.property('data')

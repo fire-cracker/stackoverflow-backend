@@ -1,12 +1,14 @@
-import Question from '../database/models/questions';
+import mongoose from 'mongoose';
 
+import Question from '../database/models/questions';
+import Vote from '../database/models/votes';
 
 /**
 * @export
 * @function addQuestion
 * @param {String} title - question title
 * @param {String} body - question body
-* @param {String} userId - id of the user
+* @param {Integer} userId - id of the user
 * @returns {Object} object
 */
 export const addQuestion = (title, body, userId) => {
@@ -17,8 +19,8 @@ export const addQuestion = (title, body, userId) => {
 /**
 * @export
 * @function fetchAllQuestions
-* @param {String} limit - number of questions perpage
-* @param {String} page - page number
+* @param {Integer} limit - number of questions perpage
+* @param {Integer} page - page number
 * @returns {Object} object
 */
 export const fetchAllQuestions = (limit, page) => {
@@ -35,4 +37,65 @@ export const fetchAllQuestions = (limit, page) => {
 export const questionCount = () => {
   const numOfQuestions = Question.count();
   return numOfQuestions;
+}
+
+
+/**
+* @export
+* @function fetchQuestion
+* @param {Integer} questionId - question id
+* @returns {Object} object
+*/
+export const fetchQuestion = (questionId) => {
+  const question = Question.findById(questionId);
+  return question;
+}
+
+
+/**
+* @export
+* @function fetchVote
+* @param {Integer} questionId - question id
+* @param {Integer} userId - id of the user
+* @returns {Object} object
+*/
+export const fetchVote = (questionId, userId) => {
+  const vote = Vote.findOne({ questionId: questionId, userId: userId }).exec();
+  return vote;
+}
+
+/**
+* @export
+* @function upVote
+* @param {Integer} questionId - question id
+* @param {Integer} userId - id of the user
+* @returns {Object} object
+*/
+export const upVote = (questionId, userId) => {
+  const vote = Vote({ questionId: questionId, userId: userId, upVote: true }).save()
+  return vote;
+};
+
+/**
+* @export
+* @function downVote
+* @param {Integer} questionId - question id
+* @param {Integer} userId - id of the user
+* @returns {Object} object
+*/
+export const downVote = (questionId, userId) => {
+  const vote = Vote({ questionId: questionId, userId: userId, downVote: true }).save()
+  return vote;
+};
+
+/**
+* @export
+* @function votesCount
+* @param {Integer} questionId - question id
+* @returns {Object} object
+*/
+export const votesCount = async (questionId) => {
+  const upVoteCount = await Vote.count({ questionId:  questionId, upVote: true });
+  const downVoteCount = await Vote.count({ questionId:  questionId, downVote: true });
+  return (upVoteCount - downVoteCount);
 }
