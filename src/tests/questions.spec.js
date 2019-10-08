@@ -58,4 +58,18 @@ describe('Tests for questions', () => {
             expect(res).to.have.status(401);
         });
     });
+
+    describe('Tests for get all questions', () => {
+        it('should get all questions if request is correct', async () => {
+            const res = await chai.request(app)
+                .get('/questions')
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an.instanceof(Object)
+                .and.to.have.property('data')
+                .that.includes.all.keys('questions', 'questions_count')
+                .and.to.have.property('questions')
+                .and.to.be.an.instanceof(Array)
+                .and.to.have.length.greaterThan(0)
+        });
+    });
 });
