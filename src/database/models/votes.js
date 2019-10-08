@@ -8,12 +8,12 @@ const voteSchema = new Schema({
     questionId: {
         required: true,
         type: Schema.Types.ObjectId,
-        ref: Question
+        ref: 'Question'
     },
     userId: {
         required: true,
         type: Schema.Types.ObjectId,
-        ref: User
+        ref: 'User'
     },
     upVote: {
         type: Boolean,

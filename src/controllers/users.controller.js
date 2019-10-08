@@ -63,14 +63,14 @@ export const userLogin = async (req, res) => {
     const user = await login(email);
 
     if (!user) {
-      return res.status(401).send({
+      return res.status(404).send({
         status: 'fail',
         data: { message: 'Email does not exist' }
       });
     }
 
     if (user.validatePassword(password) === false) {
-      return res.status(401).send({
+      return res.status(404).send({
         status: 'fail',
         data: { message: 'Provide correct login credentials' }
       });

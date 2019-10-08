@@ -3,7 +3,11 @@ export const createUser = {
     password: 'oyedejipeace',
     email: 'oyedejipeace@performance.com'
   };
-  
+  export const createUser2 = {
+    name: 'Oyedeji Oluwasegun',
+    password: 'oluwasegun',
+    email: 'oluwasegun@gmail.com'
+  }
   export const incorrectCreateUserDetails = {
     name: 'Oyedeji Peace',
     password: 'oyedejipeace',
