@@ -6,7 +6,7 @@ import User from '../database/models/users';
 * @function createUser
 * @param {String} name - customer name
 * @param {String} email - customer email
-* @param {String} hashedPassword - customer password
+* @param {String} password - customer password
 * @returns {Object} object
 */
 export const createUser = (name, email, password) => {

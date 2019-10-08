@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 
-import { createQuestion } from '../../controllers/questions.controller'
+import { createQuestion, getAllQuestions } from '../../controllers/questions.controller'
 import { authInterceptor } from '../../middlewares/validation/validationHandler';
 import { createQuestionValidator } from '../../middlewares/validation/question.validation';
 
@@ -12,5 +12,8 @@ questionsRouter.post('/',
     authInterceptor,
     createQuestionValidator,
     createQuestion);
+
+questionsRouter.get('/',
+    getAllQuestions);
 
 export default questionsRouter;
