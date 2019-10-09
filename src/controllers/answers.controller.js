@@ -1,10 +1,14 @@
+import dotenv from 'dotenv';
+
 import {
-    createAnswer, fetchAnswer
+    createAnswer, fetchAnswer, sendEmail
 } from '../services/answers.service';
 import {
-    fetchQuestion
+    fetchQuestion, fetchSubscribers
 } from '../services/questions.service';
 
+dotenv.config();
+const env = process.env.NODE_ENV || 'development';
 
 /**
 * @export
@@ -38,6 +42,11 @@ export const postAnswer = async (req, res) => {
 
         const createdAnswer = await createAnswer(body, questionId, userId);
         const answer = await fetchAnswer(createdAnswer._id);
+        const questionSubscribers = await fetchSubscribers(answer.questionId);
+
+        if (env === 'development' || env === 'production') { 
+        await sendEmail(questionSubscribers)
+        }
 
         return res.status(200).send({
             status: 'success',
