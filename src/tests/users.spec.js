@@ -3,6 +3,9 @@ import chaiHttp from 'chai-http';
 
 import app from '../index';
 import User from '../database/models/users';
+import Question from '../database/models/questions'
+import Answer from '../database/models/answers';
+import Votes from '../database/models/votes';
 import {
     createUser,
     userDetails, incorrectCreateUserDetails, loginUser,
@@ -14,6 +17,9 @@ chai.use(chaiHttp);
 describe('Tests for users', () => {
     before(async () => {
         await User.deleteMany({});
+        await Question.deleteMany({});
+        await Votes.deleteMany({});
+        await Answer.deleteMany({});
     });
 
     describe('Tests for create users', () => {
