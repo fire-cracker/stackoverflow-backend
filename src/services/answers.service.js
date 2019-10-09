@@ -1,4 +1,5 @@
 import Answer from '../database/models/answers';
+import { notificationMail } from '../helpers/mailer/mailer';
 
 /**
 * @export
@@ -24,3 +25,17 @@ export const fetchAnswer = (answerId) => {
     const answer = Answer.findById(answerId, { __v: 0 }).populate('user', '-password -__v');
     return answer;
 }
+
+/**
+* @export
+* @function sendEmail
+* @param {Object} subscribers - details of the subscriber and the question answered
+* @returns {Object} object
+*/
+export const sendEmail = (subscribers) => subscribers.map(async(subscriber) => {
+  const { user: {name, email, _id}, question: {title: questionTitle, _id: questionId }} = subscriber
+  const subscriberName = name
+  const subscriberEmail = email
+  const subscriberId = _id
+  return await notificationMail(subscriberName, subscriberEmail, subscriberId, questionTitle, questionId);
+});

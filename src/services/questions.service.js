@@ -107,8 +107,8 @@ export const votesCount = async (questionId) => {
 * @returns {Object} object
 */
 export const fetchSubscription = (questionId, userId) => {
-  const vote = Subscriber.findOne({ questionId: questionId, userId: userId }).exec();
-  return vote;
+  const subscription = Subscriber.findOne({ questionId: questionId, userId: userId }).exec();
+  return subscription;
 }
 
 /**
@@ -119,6 +119,19 @@ export const fetchSubscription = (questionId, userId) => {
 * @returns {Object} object
 */
 export const subscribe = (questionId, userId) => {
-  const vote = Subscriber({ questionId: questionId, userId: userId }).save()
-  return vote;
+  return Subscriber({ questionId: questionId, userId: userId }).save()
 };
+
+/**
+* @export
+* @function fetchSubscribers
+* @param {Integer} questionId - question id
+* @param {Integer} userId - id of the user
+* @returns {Object} object
+*/
+export const fetchSubscribers = (questionId) => {
+  const subscribers = Subscriber.find({ questionId: questionId})
+  .populate('question', '-__v')
+  .populate('user', '-password -__v').exec();
+  return subscribers;
+}
