@@ -38,6 +38,13 @@ updatedAt: {
     justOne : true
 });
 
+answerSchema.virtual('question', {
+    ref: 'Question',
+    localField: 'questionId', 
+    foreignField: '_id',
+    justOne : true
+});
+
  answerSchema.set('toObject', { virtuals: true });
  answerSchema.set('toJSON', { virtuals: true });
 
