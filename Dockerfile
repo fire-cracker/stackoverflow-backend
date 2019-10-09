@@ -1,25 +1,12 @@
-FROM mongodb:4.2
+FROM node:latest
 LABEL Peace Oyedeji <oyedejipeacea@gmail.com>
 
 # SETUP DATABASES
-ENV MONGODB_DATABASE 'stackoverflow'
-ENV MONGODB_ROOT_PASSWORD 'stackoverflow'
-ENV MONGODB_USER 'stackoverflow'
-ENV MONGODB_PASSWORD 'stackoverflow'
-
+ENV MONGO_INITDB_ROOT_USERNAME: 'root'
+ENV MONGO_INITDB_ROOT_PASSWORD: 'example'
 
 ENV NODE_ENV=development
 COPY package.json package-lock.json ./
-
-RUN apt-get update && \
-    apt-get install curl software-properties-common make -y && \
-    curl -sL https://deb.nodesource.com/setup_12.x | bash -
-
-RUN apt-get update && \
-    apt-get install -y \
-    nodejs
-
-RUN apt-get install build-essential -y
 
 RUN mkdir /backend
 WORKDIR /
