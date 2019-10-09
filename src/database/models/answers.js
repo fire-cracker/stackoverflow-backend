@@ -11,12 +11,12 @@ body: {
 
 },
 questionId: {
-    // required: true,
+    required: true,
     type: Schema.Types.ObjectId,
     ref: 'Question'
 },
 userId: {
-    // required: true,
+    required: true,
     type: Schema.Types.ObjectId,
     ref: 'User'
 },
@@ -30,6 +30,16 @@ updatedAt: {
     default: Date.now
 }
 })
+
+ answerSchema.virtual('user', {
+    ref: 'User',
+    localField: 'userId', 
+    foreignField: '_id',
+    justOne : true
+});
+
+ answerSchema.set('toObject', { virtuals: true });
+ answerSchema.set('toJSON', { virtuals: true });
 
 const Answer = db.model('Answer', answerSchema); 
 

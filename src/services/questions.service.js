@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-
 import Question from '../database/models/questions';
 import Vote from '../database/models/votes';
 

@@ -7,6 +7,7 @@ import {
 import { authInterceptor } from '../../middlewares/validation/validationHandler';
 import { createQuestionValidator } from '../../middlewares/validation/question.validation';
 import { paramsValidator } from '../../middlewares/validation/params.validation';
+import answersRouter from './answers.router';
 
 const questionsRouter = Router();
 
@@ -34,5 +35,7 @@ questionsRouter.post('/:questionId/downvote',
     authInterceptor,
     paramsValidator,
     downVoteQuestion);
+
+questionsRouter.use('/:questionId/answers', answersRouter)
 
 export default questionsRouter;
