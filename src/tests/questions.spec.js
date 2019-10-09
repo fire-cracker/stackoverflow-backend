@@ -267,4 +267,67 @@ describe('Tests for questions', () => {
         });
 
     });
+
+    describe('Tests to subcribe to a question', () => {
+        it('should subscribe to question if request is correct', async () => {
+            const res = await chai.request(app)
+                .post(`/questions/${questionId}/subscribe`)
+                .set('Authorization', `${userToken2}`)
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.an.instanceof(Object)
+                .and.to.have.property('data')
+                .and.to.have.property('message')
+                .and.to.equal('You have subscribed to this question')
+        });
+
+        it('should notify user if user already subscribed to the question', async () => {
+            const res = await chai.request(app)
+                .post(`/questions/${questionId}/subscribe`)
+                .set('Authorization', `${userToken2}`);
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an.instanceof(Object)
+                .that.includes.all.keys('status', 'data')
+                .and.to.have.property('data')
+                .and.to.have.deep.property('message')
+                .and.to.equal('You already subscribed to this question');
+        });
+
+
+        it('should return error if question to be subscribed to does not exist', async () => {
+            const res = await chai.request(app)
+                .post(`/questions/${fakeQuestionId}/subscribe`)
+                .set('Authorization', `${userToken2}`);
+            expect(res).to.have.status(404);
+            expect(res.body).to.be.an.instanceof(Object)
+                .that.includes.all.keys('status', 'data')
+                .and.to.have.property('data')
+                .and.to.have.deep.property('message')
+                .and.to.equal('Question does not exist');
+        });
+
+        it('should return error if user tries to subscribe to their question', async () => {
+            const res = await chai.request(app)
+                .post(`/questions/${questionId}/subscribe`)
+                .set('Authorization', `${userToken}`);
+            expect(res).to.have.status(401);
+            expect(res.body).to.be.an.instanceof(Object)
+                .that.includes.all.keys('status', 'data')
+                .and.to.have.property('data')
+                .and.to.have.deep.property('message')
+                .and.to.equal('You cannot subscribe to your question');
+        });
+
+        it('should return error if questionId is invalid', async () => {
+            const res = await chai.request(app)
+                .post(`/questions/${invalidQuestionId}/subscribe`)
+                .set('Authorization', `${userToken2}`);
+            expect(res).to.have.status(400);
+            expect(res.body).to.be.an.instanceof(Object)
+                .that.includes.all.keys('status', 'data')
+                .and.to.have.property('data')
+                .and.to.have.deep.property('message')
+                .and.to.equal('questionId must be a single string of 12 bytes or 24 hex characters');
+        });
+
+    });
 });

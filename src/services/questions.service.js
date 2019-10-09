@@ -1,5 +1,6 @@
 import Question from '../database/models/questions';
 import Vote from '../database/models/votes';
+import Subscriber from '../database/models/questionSubscribers';
 
 /**
 * @export
@@ -97,3 +98,27 @@ export const votesCount = async (questionId) => {
   const downVoteCount = await Vote.countDocuments({ questionId:  questionId, downVote: true });
   return (upVoteCount - downVoteCount);
 }
+
+/**
+* @export
+* @function fetchSubscription
+* @param {Integer} questionId - question id
+* @param {Integer} userId - id of the user
+* @returns {Object} object
+*/
+export const fetchSubscription = (questionId, userId) => {
+  const vote = Subscriber.findOne({ questionId: questionId, userId: userId }).exec();
+  return vote;
+}
+
+/**
+* @export
+* @function subscribe
+* @param {Integer} questionId - question id
+* @param {Integer} userId - id of the user
+* @returns {Object} object
+*/
+export const subscribe = (questionId, userId) => {
+  const vote = Subscriber({ questionId: questionId, userId: userId }).save()
+  return vote;
+};

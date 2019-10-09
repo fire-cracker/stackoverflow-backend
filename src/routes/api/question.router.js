@@ -2,7 +2,8 @@ import { Router } from 'express';
 import passport from 'passport';
 
 import {
-    createQuestion, getAllQuestions, getQuestion, upVoteQuestion, downVoteQuestion
+    createQuestion, getAllQuestions, getQuestion,
+     upVoteQuestion, downVoteQuestion, subscribeQuestion
 } from '../../controllers/questions.controller'
 import { authInterceptor } from '../../middlewares/validation/validationHandler';
 import { createQuestionValidator } from '../../middlewares/validation/question.validation';
@@ -35,6 +36,12 @@ questionsRouter.post('/:questionId/downvote',
     authInterceptor,
     paramsValidator,
     downVoteQuestion);
+
+questionsRouter.post('/:questionId/subscribe',
+    passport.authenticate('jwt', { session: false }),
+    authInterceptor,
+    paramsValidator,
+    subscribeQuestion);
 
 questionsRouter.use('/:questionId/answers', answersRouter)
 

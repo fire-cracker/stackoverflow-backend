@@ -8,15 +8,15 @@ const subscriberSchema = new Schema({
 questionId: {
     required: true,
     type: Schema.Types.ObjectId,
-    ref: Question
+    ref: 'Question'
 },
 userId: {
     required: true,
     type: Schema.Types.ObjectId,
-    ref: User
+    ref: 'User'
 }
 })
 
-const Subscriber = db.model('Answer', subscriberSchema); 
+const Subscriber = db.model('Subscriber', subscriberSchema); 
 
 export default Subscriber;
