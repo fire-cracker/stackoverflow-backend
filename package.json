@@ -54,7 +54,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "jest": "^24.7.1",
-    "mocha": "^6.1.4",
+    "mocha": "^10.2.0",
     "mocha-lcov-reporter": "^1.3.0",
     "prettier": "^1.16.4",
     "nyc": "^14.1.1"
